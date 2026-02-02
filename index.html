@@ -1,72 +1,94 @@
-<style>
-    /* Global text + font */
-    * {
-        font-family: serif !important;
-        color: #FFFFFF !important;
-        border-color: #FFFFFF !important;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
 
-    body {
-        background-color: #191919 !important;
+<style>
+    /* Reset iframe defaults */
+    html, body {
         margin: 0;
         padding: 0;
+        background: transparent;
     }
 
-    /* FORCE background on all common containers */
-    input,
-    textarea,
-    select,
-    button,
-    div,
-    section,
-    article {
-        background-color: #191919 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #FFFFFF !important;
+    /* Main container INSIDE Notion embed */
+    .notion-widget {
+        background-color: #191919;
+        color: #FFFFFF;
+        font-family: serif;
+        border: 1px solid #FFFFFF;
+        padding: 20px;
+        box-sizing: border-box;
     }
 
-    /* EXTRA safety for editable / injected content */
-    [contenteditable],
-    [role="textbox"] {
-        background-color: #191919 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #FFFFFF !important;
+    .notion-widget * {
+        color: #FFFFFF;
+        font-family: serif;
     }
 </style>
+</head>
+
+<body>
+
+<div class="notion-widget">
+    <div id="greet"></div>
+    <div id="date"></div>
+    <div id="clock"></div>
+</div>
 
 <script>
+function padZeros(num) {
+    return num < 10 ? "0" + num : num;
+}
+
+function twelveHour(hour) {
+    return hour % 12 || 12;
+}
+
 function displayGreetings(today) {
     let hrs = today.getHours();
-    let name = "";
     let greet = "";
 
     if (hrs < 12)
-        greet = 'Good Morning ' + name;
+        greet = "Good Morning";
     else if (hrs < 17)
-        greet = 'Good Afternoon ' + name;
+        greet = "Good Afternoon";
     else
-        greet = 'Good Evening ' + name;
+        greet = "Good Evening";
 
-    document.getElementById('greet').innerHTML = greet;
+    document.getElementById("greet").innerHTML = greet;
 }
 
 function displayDate(today) {
-    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-    let dayName = days[today.getDay()];
-    let monthName = monthNames[today.getMonth()];
-    let date = today.getDate();
-    let year = today.getFullYear();
-
-    document.getElementById('date').innerHTML =
-        `${dayName}, ${monthName} ${date} ${year}`;
+    document.getElementById("date").innerHTML =
+        `${days[today.getDay()]}, ${months[today.getMonth()]} ${today.getDate()} ${today.getFullYear()}`;
 }
 
-function displayClock(today) {
-    let hour = padZeros(twelveHour(today.getHours()));
-    let minutes = padZeros(today.getMinutes());
-    let seconds = padZeros(today.getSeconds());
-    let ampm = today.get
+function displayClock() {
+    const now = new Date();
+
+    let hour = padZeros(twelveHour(now.getHours()));
+    let minutes = padZeros(now.getMinutes());
+    let seconds = padZeros(now.getSeconds());
+    let ampm = now.getHours() >= 12 ? "PM" : "AM";
+
+    document.getElementById("clock").innerHTML =
+        `${hour}:${minutes}:${seconds} ${ampm}`;
 }
+
+function updateAll() {
+    const now = new Date();
+    displayGreetings(now);
+    displayDate(now);
+    displayClock();
+}
+
+updateAll();
+setInterval(updateAll, 1000);
 </script>
+
+</body>
+</html>
