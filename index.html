@@ -1,16 +1,18 @@
 <style>
-    /* Global styles */
+    /* Global text + font */
     * {
-        font-family: serif;
-        color: #FFFFFF;
-        border-color: #FFFFFF;
+        font-family: serif !important;
+        color: #FFFFFF !important;
+        border-color: #FFFFFF !important;
     }
 
     body {
-        background-color: #191919;
+        background-color: #191919 !important;
         margin: 0;
         padding: 0;
     }
+
+    /* FORCE background on all common containers */
     input,
     textarea,
     select,
@@ -18,9 +20,17 @@
     div,
     section,
     article {
-        background-color: #191919;
-        color: #FFFFFF;
-        border: 1px solid #FFFFFF;
+        background-color: #191919 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #FFFFFF !important;
+    }
+
+    /* EXTRA safety for editable / injected content */
+    [contenteditable],
+    [role="textbox"] {
+        background-color: #191919 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #FFFFFF !important;
     }
 </style>
 
